@@ -18,4 +18,4 @@ jobs:
     - name: Add SHORT_SHA env property with commit short sha
       run: echo "SHORT_SHA=`echo ${GITHUB_SHA} | cut -c1-8`" >> $GITHUB_ENV
     - name: Build the Docker image
-      run: docker build . --file ./build/Docker/Dockerfile --tag API_IMAGE:$SHORT_SHA
+      run: docker build . --file ./build/Docker/Dockerfile --tag amzn_api:$SHORT_SHA
