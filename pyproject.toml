@@ -6,6 +6,9 @@ authors = ["Kyle McLester <kmcleste@uncc.edu>"]
 
 [tool.poetry.dependencies]
 python = "^3.9"
+fastapi = "^0.78.0"
+uvicorn = "^0.17.6"
+pytest = "^7.1.2"
 
 [tool.poetry.dev-dependencies]
 
