@@ -6,7 +6,7 @@ The goal of this project is to function as a basic price tracking API - while al
 
 ## Getting Started
 
-Prerequisites: poetry, pyenv, pre-commit
+Prerequisites: [poetry](https://python-poetry.org/docs/), [pyenv](https://github.com/pyenv/pyenv), [pre-commit](https://pre-commit.com/)
 
 1. Clone the repository:
 
