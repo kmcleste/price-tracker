@@ -74,5 +74,4 @@ jobs:
         TAG: "latest"
       run: |
         docker build --tag ghcr.io/$USERNAME/$IMAGE:$TAG -f build/docker/Dockerfile .
-        docker run ghcr.io/$USERNAME/$IMAGE:$TAG
         docker push ghcr.io/$USERNAME/$IMAGE:$TAG
