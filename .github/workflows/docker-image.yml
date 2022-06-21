@@ -64,6 +64,8 @@ jobs:
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         ECR_REPOSITORY: ${{ github.event.repository.name }}
+      run: |
+        echo "ECR_REGISTRY: $ECR_REGISTRY"
 
     - name: Run Trivy vulnerability scanner
       uses: aquasecurity/trivy-action@2a2157eb22c08c9a1fac99263430307b8d1bc7a2
