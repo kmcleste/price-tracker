@@ -1,4 +1,4 @@
-name: Build docker image
+name: Scan docker image
 
 on:
   push:
@@ -8,8 +8,7 @@ on:
 
 jobs:
   build:
-    if: "contains(github.event.head_commit.message, '#build')"
-    name: Build docker image and push to ECR
+    name: Scan docker image
     runs-on: ubuntu-latest
 
     steps:
@@ -30,11 +29,21 @@ jobs:
       id: login-ecr
       uses: aws-actions/amazon-ecr-login@v1
 
-    - name: Push image to Amazon ECR
+    - name: Set AWS ECR env variables
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         ECR_REPOSITORY: ${{ github.event.repository.name }}
-      run: |
-        aws ecr describe-repositories --repository-names ${ECR_REPOSITORY} || aws ecr create-repository --repository-name ${ECR_REPOSITORY}
-        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$SHORT_SHA -f build/docker/Dockerfile .
-        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$SHORT_SHA
+
+    - name: Run Trivy vulnerability scanner
+      uses: aquasecurity/trivy-action@2a2157eb22c08c9a1fac99263430307b8d1bc7a2
+      with:
+        image-ref: $ECR_REGISTRY/$ECR_REPOSITORY:$SHORT_SHA
+        format: 'template'
+        template: '@/contrib/sarif.tpl'
+        output: 'trivy-results.sarif'
+        severity: 'CRITICAL,HIGH'
+
+    - name: Upload Trivy scan results to GitHub Security tab
+      uses: github/codeql-action/upload-sarif@v2
+      with:
+        sarif_file: 'trivy-results.sarif'
