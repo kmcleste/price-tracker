@@ -1,4 +1,4 @@
-name: Build docker image
+name: Deploy
 
 on:
   push:
@@ -7,7 +7,24 @@ on:
     branches: [ "Main" ]
 
 jobs:
-  build:
+  autopep8:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: autopep8
+        uses: peter-evans/autopep8@v1
+        with:
+          args: --recursive --in-place --aggressive --aggressive .
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v3
+        with:
+          commit-message: autopep8 action fixes
+          title: Fixes by autopep8 action
+          body: This is an auto-generated PR with fixes by autopep8.
+          labels: autopep8, automated pr
+          reviewers:  kmcleste
+          branch: autopep8-patches
+  publish-ecr:
     name: Build docker image and push to ECR
     runs-on: ubuntu-latest
 
@@ -37,3 +54,25 @@ jobs:
         aws ecr describe-repositories --repository-names ${ECR_REPOSITORY} || aws ecr create-repository --repository-name ${ECR_REPOSITORY}
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$SHORT_SHA -f build/docker/Dockerfile .
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$SHORT_SHA
+  publish-ghcr:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Login to GitHub Container Registry
+      uses: docker/login-action@v1
+      with:
+        registry: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ secrets.TOKEN }}
+
+    - name: Build Docker image
+      env:
+        USERNAME: ${{ github.actor }}
+        IMAGE: ${{ github.event.repository.name }}
+        TAG: "latest"
+      run: |
+        docker build --tag ghcr.io/$USERNAME/$IMAGE:$TAG -f build/docker/Dockerfile .
+        docker run ghcr.io/$USERNAME/$IMAGE:$TAG
+        docker push ghcr.io/$USERNAME/$IMAGE:$TAG
