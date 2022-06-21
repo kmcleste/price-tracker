@@ -1,7 +1,7 @@
 # Amazon Price Tracker
 
 ![GitHub last commit](https://img.shields.io/github/last-commit/kmcleste/price-tracker?style=flat-square)
-![GitHub Workflow Status](https://img.shields.io/github/workflow/status/kmcleste/price-tracker/Docker%20Image%20CI?label=docker%20build&logo=docker&style=flat-square)
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/kmcleste/price-tracker/Build%20docker%20image?label=docker%20build&logo=docker&style=flat-square)
 
 The goal of this project is to function as a basic price tracking API - while also teaching the fundamentals of deploying a full stack project to the cloud.
 
