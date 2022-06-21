@@ -13,4 +13,4 @@ requirements:
 	poetry export -f requirements.txt --output requirements.txt --without-hashes
 
 build-api:
-	docker build -t api:latest -f ./build/docker/Dockerfile .
+	docker build --no-cache -t api:latest -f ./build/docker/Dockerfile .
