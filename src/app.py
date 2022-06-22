@@ -85,8 +85,9 @@ class Scraper():
 def root():
     return api_info
 
+
 @app.on_event("startup")
-@repeat_every(seconds=60 * 60 * 12) # 12 hours
+@repeat_every(seconds=60 * 60 * 12)  # 12 hours
 @app.get("/tracker", response_class=PrettyJSONResponse)
 def tracker():
     with open('./src/vars.json', 'r') as f:
