@@ -5,14 +5,14 @@ import os
 from bs4 import BeautifulSoup
 from datetime import datetime
 from fastapi import FastAPI
+from fastapi_utils.tasks import repeat_every
 from formatting import PrettyJSONResponse
 import requests
 
+logger = logging.getLogger(__name__)
 app = FastAPI(title="Amazon Price Tracker")
 
-logger = logging.getLogger(__file__)
-
-basic_info = {
+api_info = {
     "author": "Kyle McLester",
     "version": "0.1.0",
     "license": "MIT",
@@ -82,12 +82,13 @@ class Scraper():
 
 
 @app.get("/", response_class=PrettyJSONResponse)
-async def root():
-    return basic_info
+def root():
+    return api_info
 
-
+@app.on_event("startup")
+@repeat_every(seconds=60 * 60 * 12) # 12 hours
 @app.get("/tracker", response_class=PrettyJSONResponse)
-async def tracker():
+def tracker():
     with open('./src/vars.json', 'r') as f:
         vars = json.loads(f.read())
     scrape = Scraper(url=vars["url"])
