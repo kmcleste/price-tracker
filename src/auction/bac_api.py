@@ -14,9 +14,8 @@ api_info = {
     "author": "Kyle McLester",
     "version": "0.1.0",
     "license": "MIT",
-    "last_modified": datetime.fromtimestamp(os.path.getmtime(__file__)).strftime(
-        "%Y-%m-%d %H:%M:%S"
-    ),
+    "last_modified": datetime.fromtimestamp(
+        os.path.getmtime(__file__)).strftime("%Y-%m-%d %H:%M:%S"),
 }
 
 
@@ -41,8 +40,10 @@ class Scraper:
         lot_link = driver.find_elements(
             by=By.CSS_SELECTOR, value=".lot-tile-lead-container-header a"
         )
-        current_bid = driver.find_elements(by=By.CSS_SELECTOR, value=".lot-high-bid")
-        time_remaining = driver.find_elements(by=By.CLASS_NAME, value="lot-time-left")
+        current_bid = driver.find_elements(
+            by=By.CSS_SELECTOR, value=".lot-high-bid")
+        time_remaining = driver.find_elements(
+            by=By.CLASS_NAME, value="lot-time-left")
         suggested_bid = driver.find_elements(
             by=By.CLASS_NAME, value="TileDisplayMinBid"
         )
@@ -53,7 +54,8 @@ class Scraper:
         bids = [bid.text for bid in current_bid][:50]
         time_left = [time.text for time in time_remaining][:50]
         next_bids = [next_bid.text for next_bid in suggested_bid][:50]
-        thumbnails = [thumbnail.get_attribute("src") for thumbnail in images][:50]
+        thumbnails = [thumbnail.get_attribute(
+            "src") for thumbnail in images][:50]
 
         df = pd.DataFrame(
             columns=[
@@ -76,8 +78,12 @@ class Scraper:
         return df.T.to_dict()
 
     def download_images(self, ITEMS):
-        [open(f"./src/images/{key}.jpeg", "wb").write(requests.get(ITEMS[key]["thumbnail"]).content) for key in ITEMS.keys()]
-
+        [
+            open(
+                f"./src/images/{key}.jpeg",
+                "wb").write(
+                requests.get(
+                    ITEMS[key]["thumbnail"]).content) for key in ITEMS.keys()]
 
 
 @app.get("/", response_class=PrettyJSONResponse)
@@ -87,7 +93,8 @@ def root():
 
 @app.get("/items-for-sale", response_class=PrettyJSONResponse)
 async def items_for_sale():
-    scraper = Scraper(URL="https://buildersauctioncompany.hibid.com/catalog/378597/40149-charlotte-nc/")
+    scraper = Scraper(
+        URL="https://buildersauctioncompany.hibid.com/catalog/378597/40149-charlotte-nc/")
     driver = scraper.start_chromedriver()
     items = scraper.get_items_for_sale(driver)
 

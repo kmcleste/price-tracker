@@ -84,6 +84,7 @@ class Scraper():
 def root():
     return api_info
 
+
 @app.get("/tracker", response_class=PrettyJSONResponse)
 def tracker():
     with open('./src/vars.json', 'r') as f:
