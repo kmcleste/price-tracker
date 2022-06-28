@@ -5,7 +5,7 @@ import os
 from bs4 import BeautifulSoup
 from datetime import datetime
 from fastapi import FastAPI
-from formatting import PrettyJSONResponse
+from utils.formatting import PrettyJSONResponse
 import requests
 
 logger = logging.getLogger(__name__)

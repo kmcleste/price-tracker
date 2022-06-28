@@ -4,7 +4,7 @@ import requests
 
 import pandas as pd
 from fastapi import FastAPI
-from formatting import PrettyJSONResponse
+from utils.formatting import PrettyJSONResponse
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 
