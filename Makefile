@@ -4,7 +4,7 @@ repo-init:
 	pre-commit install
 
 start-api-local:
-	poetry run uvicorn app:app --reload --app-dir ./src
+	poetry run uvicorn bac_api:app --reload --app-dir ./src
 
 start-api-docker:
 	docker run -p 8000:8000 api:latest

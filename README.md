@@ -1,4 +1,4 @@
-# Amazon Price Tracker
+# Auction Tracker
 
 ![GitHub last commit](https://img.shields.io/github/last-commit/kmcleste/price-tracker?style=flat-square)
 ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/kmcleste/price-tracker/Deploy?label=docker%20build&logo=docker&style=flat-square)
